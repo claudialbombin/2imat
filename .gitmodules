@@ -25,3 +25,6 @@
 [submodule "Aprendizaje Automatico/P8 - Arboles de Decision"]
 	path = Aprendizaje Automatico/P8 - Arboles de Decision
 	url = https://github.com/ICAI-IMAT-ML/p2-8-decision-tree-claudialbombin.git
+[submodule "P3 - Regresion Lineal I"]
+	path = P3 - Regresion Lineal I
+	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
