@@ -15,9 +15,31 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 ### 🔍 [Adquisición de Datos](https://github.com/claudialbzz/Adquisicion)
 *Técnicas para obtener, limpiar y preparar datos desde múltiples fuentes*
 - 🐼 Manipulación avanzada de DataFrames con pandas
-- 🤖 Procesamiento automatizado de datos
+- 🤖 Procesamiento automatizado de datos y autómatas
 - 🎵 Análisis de datasets complejos (Spotify)
 - 📊 Técnicas de limpieza y transformación
+- 🌐 Creación de CV en HTML
+
+### 🤖 Aprendizaje Automático
+*Modelos y algoritmos de machine learning aplicados a datos reales*
+- 📦 Preparación y exploración de datos (P1)
+- 🔵 Clasificación con K-Nearest Neighbors (P2)
+- 📈 Regresión lineal simple y múltiple (P3 y P4)
+- 🔀 Regresión logística y clasificación binaria (P5)
+- 🔁 Validación cruzada y evaluación de modelos (P6)
+- 🧮 Análisis Discriminante Lineal — LDA (P7)
+- 🌳 Árboles de decisión (P8)
+
+### 🗄️ Bases de Datos
+*Diseño, consulta y gestión de bases de datos relacionales y NoSQL*
+- 🗃️ SQL básico: consultas, filtros y agregaciones (P1)
+- 🔗 SQL avanzado: joins, subconsultas y vistas (P2)
+- 🐍 Integración SQL con Python (P3)
+- ⚡ SQL + Python + Benchmarking de rendimiento (P4)
+- 🍃 MongoDB básico: documentos y colecciones (P5)
+- 🐍 MongoDB + Python + Benchmarking (P6)
+- 🕸️ Bases de datos de grafos con Neo4J (P7)
+- 🔍 Reto colaborativo: Asesinato SQL
 
 ### 📘 [Ecuaciones Diferenciales](https://github.com/claudialbzz/EDO.git)
 *Modelización y análisis de sistemas dinámicos continuos*
@@ -26,33 +48,48 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 - 🧮 Transformada de Laplace y resolución analítica
 - 🌊 Aplicaciones a fenómenos físicos, biológicos y de ingeniería
 
-### 🧠 [Fundamentos de la IA](https://github.com/claudialbzz/FIA.git))
+### 🧠 [Fundamentos de la IA](https://github.com/claudialbzz/FIA.git)
 *Conceptos fundamentales y algoritmos de inteligencia artificial*
 - 🔍 Algoritmos de búsqueda y resolución de problemas
+- ♟️ Algoritmo MinMax para juegos
+- 🧩 Lógica e inferencia bayesiana
 - 📈 Machine Learning supervisado y no supervisado
-- 🎯 Sistemas expertos y representación del conocimiento
-- 🧩 Procesamiento de lenguaje natural
 
-### 💻 [Fundamentos de Sistemas Operativos](https://github.com/claudialbzz/FUSO.git))
+### 💻 [Fundamentos de Sistemas Operativos](https://github.com/claudialbzz/FUSO.git)
 *Arquitectura interna y funcionamiento de sistemas operativos*
 - ⚙️ Gestión de procesos y planificación de CPU
 - 💾 Administración de memoria y sistemas de archivos
-- 🔄 Sincronización y comunicación entre procesos
-- 🐧 Programación en entornos Unix/Linux
+- 🔄 Sincronización con semáforos (P6)
+- 🧠 Gestión de memoria dinámica (P7)
 
 ### 🔢 [Matemática Discreta](https://github.com/claudialbzz/Discreta.git)
 *Fundamentos matemáticos de la ciencia de la computación*
-- 🧩 Teoría de conjuntos y relaciones
-- 🔗 Lógica matemática y métodos de demostración
-- 📊 Combinatoria y técnicas de conteo
-- 🪮 Teoría de grafos y aplicaciones
+- 🚀 Criptografía RSA (P2)
+- 📡 Algoritmos GPS y posicionamiento (P3)
+- 🧩 Teoría de conjuntos, relaciones y lógica matemática
+- 📊 Combinatoria y teoría de grafos
 
-### 📊 [Visualización de Datos](https://github.com/claudialbzz/Visualizacion.git))
+### 🔢 Métodos Numéricos
+*Algoritmos computacionales para resolver problemas matemáticos complejos*
+- 🚀 Análisis del cohete Arianne 5 (P1)
+- 📐 Interpolación de Newton (P2)
+- 〰️ Splines cúbicos (P3)
+- ∫ Derivación e integración numérica (P4)
+- 🧮 Resolución numérica de ecuaciones y sistemas
+
+### ⚡ Sistemas Electrónicos
+*Diseño y programación de sistemas electrónicos y hardware*
+- 🔧 Soldadura y puesta en marcha del sistema (Lab01)
+- 🖥️ Laboratorios prácticos de diseño electrónico (Lab02–Lab05)
+- 📋 Examen de laboratorio
+- 🏗️ Proyecto final integrador
+
+### 📊 [Visualización de Datos](https://github.com/claudialbzz/Visualizacion.git)
 *Comunicación efectiva a través de representaciones visuales*
-- 📈 Fundamentos del diseño visual
-- 🎨 Librerías de visualización (Matplotlib, Seaborn, Plotly)
+- 📈 Dashboards con Tableau (P1)
+- 🎨 Visualización estadística con Seaborn (P2)
+- 🌐 Gráficos interactivos con Plotly (P3)
 - 📖 Storytelling con datos
-- 🔍 Dashboards interactivos
 
 ---
 
@@ -60,14 +97,16 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 
 ```
 iMAT-2/
-├── Adquisicion-Datos/           # Técnicas de adquisición y procesamiento
-├── Ecuaciones-Diferenciales/    # Fundamentos matematicos diferenciales
-├── Fundamentos-IA/              # Algoritmos de inteligencia artificial  
-├── Sistemas-Operativos/         # Arquitectura de sistemas operativos
-├── Matematica-Discreta/         # Fundamentos matemáticos discretos
-├── Visualizacion-Datos/         # Comunicación visual de datos
-├── docs/                        # Documentación general
-└── recursos/                    # Recursos compartidos entre asignaturas
+├── Adquisicion de datos/        # Técnicas de adquisición y procesamiento
+├── Aprendizaje Automatico/      # Modelos y algoritmos de Machine Learning
+├── Bases de Datos/              # SQL, MongoDB y Neo4J
+├── Ecuaciones Diferenciales/    # Modelización de sistemas dinámicos
+├── Fundamentos de la IA/        # Algoritmos de inteligencia artificial
+├── Fundamentos de los Sistemas Operativos/  # Arquitectura de sistemas operativos
+├── Matematica Discreta/         # Fundamentos matemáticos discretos
+├── Metodos Numericos/           # Algoritmos numéricos computacionales
+├── Sistemas Electronicos/       # Diseño y programación de hardware
+└── Visualizacion de Datos/      # Comunicación visual de datos
 ```
 
 Cada subdirectorio contiene:
@@ -98,11 +137,13 @@ Cada subdirectorio contiene:
 
 | Área | Tecnologías |
 |------|-------------|
-| **Programación** | Python, C, Bash, Jupyter Notebooks |
-| **Análisis de Datos** | pandas, NumPy, scikit-learn |
-| **Visualización** | Matplotlib, Seaborn, Plotly |
-| **Sistemas** | Linux, Git, comandos Unix |
-| **Matemáticas** | LaTeX, algoritmos discretos |
+| **Programación** | Python, C, MATLAB, Bash, Jupyter Notebooks |
+| **Machine Learning** | scikit-learn, NumPy, pandas |
+| **Bases de Datos** | SQL, MongoDB, Neo4J, Python (psycopg2/pymongo) |
+| **Visualización** | Matplotlib, Seaborn, Plotly, Tableau |
+| **Métodos Numéricos** | Python, MATLAB, algoritmos iterativos |
+| **Sistemas** | Linux, Git, comandos Unix, electrónica |
+| **Matemáticas** | LaTeX, algoritmos discretos, criptografía |
 
 ---
 
@@ -126,6 +167,9 @@ cd Fundamentos-IA/Practicas/Principales/P2-Clasificacion/
 ## 🌟 Proyectos Destacados
 
 - **Sistema de recomendación musical** (IA + Adquisición de Datos)
+- **Análisis del fallo del cohete Arianne 5** (Métodos Numéricos)
+- **Reto del Asesinato SQL** (Bases de Datos)
+- **Pipeline completo de Machine Learning** (Aprendizaje Automático)
 - **Simulador de planificación de procesos** (Sistemas Operativos)
 - **Algoritmos de grafos para redes** (Matemática Discreta)
 - **Dashboard interactivo de datos** (Visualización)
