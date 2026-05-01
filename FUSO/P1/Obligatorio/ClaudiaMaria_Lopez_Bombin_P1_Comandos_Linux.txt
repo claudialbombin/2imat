@@ -1,0 +1,22 @@
+Clave: 202312774
+Letras: c, l, a
+Ejercicio1: pwd > var && cat var
+Ejercicio2: [ ! -d Practica1-202312774 ] && mkdir Practica1-202312774 && echo "Comando realizado correctamente"
+Ejercicio3: cat aleat.txt
+Ejercicio4: cp aleat.txt aleat2.txt && mv aleat2.txt Practica1-202312774 && cd Practica1-202312774 && mv aleat2.txt aleat.txt
+Ejercicio5: mv aleat.txt aleat202312774.txt
+Ejercicio6: ls -lt
+Ejercicio7: rm aleat.txt && cd .. && cp aleat.txt aleat2.txt && mv aleat2.txt Practica1-202312774
+Ejercicio8: cat aleat.txt | wc -l && cat aleat.txt | wc -m
+Ejercicio9: grep -i -c "c" aleat.txt && grep -i -c "l" aleat.txt && grep -i -c "a" aleat.txt
+Ejercicio10: grep -i -o "c" aleat.txt | wc -l && grep -i -o "l" aleat.txt | wc -l && grep -i -o "a" aleat.txt | wc -l
+Ejercicio11: sed -e 's/c/1/gi' -e 's/l/2/gi' -e 's/a/2/gi' aleat.txt
+Ejercicio12: cat aleat.txt |sort|uniq|wc -l
+Ejercicio13:  cut -d',' -f1 aleat.txt | sort | uniq | wc -l && cut -d',' -f2 aleat.txt | sort | uniq | wc -l && cut -d',' -f3 aleat.txt | sort | uniq | wc -l
+Ejercicio14: awk 'NR==3 || NR==7' aleat.txt
+Ejercicio15: grep -i 'bo' aleat.txt > salida.txt && grep -i 'do' aleat.txt >> salida.txt
+Ejercicio16: sed 's/bo//g' salida.txt
+Ejercicio17: sed 's/,/\t/g' > aleat_tabs.txt
+Ejercicio18: sed 's/[a-zA-Z,]//g' aleat.txt | sort -nr
+Ejercicio19: sed 's/[0-9,]//g' aleat.txt | sort -r
+Ejercicio20: grep -h '[A-Z][A-Z]' aleat*.txt  

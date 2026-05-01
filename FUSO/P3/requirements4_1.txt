@@ -1,0 +1,5 @@
+# Este .txt contiene los requirements para poder ejecutar el fichero .py plot_color_quantization.py
+
+scikit-learn==1.3.2
+matplotlib==3.7.2
+numpy==1.24.3

@@ -1,0 +1,19 @@
+Comandos empleados para calcular con bash:
+
+# Número de regiones distintas
+tail -n +2 100K_Sales_Records.csv | cut -d',' -f1 | sort | uniq | wc -l
+
+# Número de países distintos
+tail -n +2 100K_Sales_Records.csv | cut -d',' -f2 | sort | uniq | wc -l
+
+# Número de productos distintos (Item Type)
+tail -n +2 100K_Sales_Records.csv | cut -d',' -f3 | sort | uniq | wc -l
+
+# Número total de líneas
+wc -l 100K_Sales_Records.csv
+
+Para comparar tiempos:
+time tail -n +2 100K_Sales_Records.csv | cut -d',' -f1 | sort | uniq | wc -l
+time python3 contar.py
+
+Conclusión: el método más rápido fue bash/shell. Esto es coherente ya que al final es un lenguaje de programacionmas bajo y que requiere de menos tiempo de interpretacion del codigo a lenguaje maquina.
