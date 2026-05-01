@@ -1,0 +1,8 @@
+# === CONEXIÓN A MYSQL ===
+# PyMySQL es el conector para MySQL (alternativa a mysql-connector-python)
+pymysql==1.1.0
+
+# === WEB SCRAPING ===
+# BeautifulSoup4 para parsear HTML y extraer datos de páginas web
+beautifulsoup4==4.12.3
+
