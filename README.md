@@ -12,7 +12,7 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 
 ## 📚 Asignaturas Incluidas
 
-### 🔍 [Adquisición de Datos](https://github.com/claudialbzz/Adquisicion)
+### 🔍 Adquisición de Datos
 *Técnicas para obtener, limpiar y preparar datos desde múltiples fuentes*
 - 🐼 Manipulación avanzada de DataFrames con pandas
 - 🤖 Procesamiento automatizado de datos y autómatas
@@ -41,28 +41,28 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 - 🕸️ Bases de datos de grafos con Neo4J (P7)
 - 🔍 Reto colaborativo: Asesinato SQL
 
-### 📘 [Ecuaciones Diferenciales](https://github.com/claudialbzz/EDO.git)
+### 📘 Ecuaciones Diferenciales
 *Modelización y análisis de sistemas dinámicos continuos*
 - 📈 Ecuaciones diferenciales ordinarias (EDO) y sistemas lineales
 - ⚙️ Métodos numéricos: Euler, Runge–Kutta y estabilidad
 - 🧮 Transformada de Laplace y resolución analítica
 - 🌊 Aplicaciones a fenómenos físicos, biológicos y de ingeniería
 
-### 🧠 [Fundamentos de la IA](https://github.com/claudialbzz/FIA.git)
+### 🧠 Fundamentos de la IA
 *Conceptos fundamentales y algoritmos de inteligencia artificial*
 - 🔍 Algoritmos de búsqueda y resolución de problemas
 - ♟️ Algoritmo MinMax para juegos
 - 🧩 Lógica e inferencia bayesiana
 - 📈 Machine Learning supervisado y no supervisado
 
-### 💻 [Fundamentos de Sistemas Operativos](https://github.com/claudialbzz/FUSO.git)
+### 💻 Fundamentos de Sistemas Operativos
 *Arquitectura interna y funcionamiento de sistemas operativos*
 - ⚙️ Gestión de procesos y planificación de CPU
 - 💾 Administración de memoria y sistemas de archivos
 - 🔄 Sincronización con semáforos (P6)
 - 🧠 Gestión de memoria dinámica (P7)
 
-### 🔢 [Matemática Discreta](https://github.com/claudialbzz/Discreta.git)
+### 🔢 Matemática Discreta
 *Fundamentos matemáticos de la ciencia de la computación*
 - 🚀 Criptografía RSA (P2)
 - 📡 Algoritmos GPS y posicionamiento (P3)
@@ -84,7 +84,7 @@ El **Grado en Ingeniería Matemática (iMAT)** de ICAI es un programa interdisci
 - 📋 Examen de laboratorio
 - 🏗️ Proyecto final integrador
 
-### 📊 [Visualización de Datos](https://github.com/claudialbzz/Visualizacion.git)
+### 📊 Visualización de Datos
 *Comunicación efectiva a través de representaciones visuales*
 - 📈 Dashboards con Tableau (P1)
 - 🎨 Visualización estadística con Seaborn (P2)
@@ -155,8 +155,8 @@ Cada subdirectorio contiene:
 
 ```bash
 # Ejemplo: Clonar y explorar
-git clone https://github.com/tuusuario/imat-2.git
-cd imat-2
+git clone https://github.com/tuusuario/2imat.git
+cd 2imat
 
 # Navegar a una asignatura específica
 cd Fundamentos-IA/Practicas/Principales/P2-Clasificacion/
