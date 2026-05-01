@@ -1,103 +1,126 @@
 # 🧠 Fundamentos de la Inteligencia Artificial
 
-Bienvenido a mi repositorio, un espacio donde documento mi recorrido por la asignatura de **Fundamentos de la Inteligencia Artificial (FIA)** del **Grado en Ingeniería Matemática (iMAT)** en **ICAI**.
-Aquí reúno **todas las prácticas, materiales, algoritmos, datasets y entregables** que he desarrollado a lo largo del curso.
-
-Este repositorio refleja tanto mi **progreso técnico** en el desarrollo de sistemas inteligentes como mi **crecimiento personal y metodológico** al aprender a diseñar algoritmos que pueden aprender y razonar.
+Bienvenido a la carpeta de **Fundamentos de la Inteligencia Artificial (FIA)** del **Grado en Ingeniería Matemática (iMAT)** en **ICAI**.
+Aquí reúno **todas las prácticas, algoritmos y entregables** que he desarrollado a lo largo del curso, desde agentes reflejos básicos hasta sistemas de inferencia bayesiana y proyectos integradores.
 
 ---
 
 ## 🎯 Sobre la Asignatura
 
-La asignatura de **Fundamentos de la Inteligencia Artificial** tiene como objetivo principal enseñar los conceptos fundamentales y técnicas básicas de la **inteligencia artificial moderna**.
-En el marco del grado iMAT, combina los fundamentos matemáticos con la ciencia de la computación y la estadística, fomentando una comprensión profunda de cómo las máquinas pueden emular procesos cognitivos humanos.
+La asignatura de **Fundamentos de la Inteligencia Artificial** tiene como objetivo enseñar los conceptos y técnicas esenciales de la **IA moderna**, combinando fundamentos matemáticos con programación algorítmica.
 
 Durante el curso se trabajan aspectos como:
 
-* 🔍 **Algoritmos de búsqueda** y resolución de problemas
-* 🎯 **Sistemas expertos** y representación del conocimiento
-* 📈 **Aprendizaje automático** supervisado y no supervisado
-* 🧩 **Procesamiento del lenguaje natural** y visión por computador
-* ⚖️ **Ética en IA** y consideraciones sociales
-
-Cada práctica busca desarrollar una habilidad concreta —desde implementar algoritmos de búsqueda clásica hasta construir modelos de machine learning básicos.
+- 🤖 **Agentes inteligentes** y entornos de tarea
+- 🔍 **Algoritmos de búsqueda** informada y no informada
+- ♟️ **Búsqueda adversarial** (MinMax) para juegos
+- 🧩 **Lógica proposicional** y resolución de puzzles
+- 📊 **Inferencia bayesiana** y razonamiento probabilístico
+- 🧠 **Procesos de decisión de Markov (MDP)** y aprendizaje por refuerzo
 
 ---
 
-## 💻 Estructura del Repositorio
+## 📚 Prácticas y Contenidos
+
+### 🤖 P1 – Introducción a los Agentes Inteligentes
+*Implementación de agentes reflejos simples en entornos de tarea*
+- **E1 – Cruce del río** (`Rivercrossing Reflex.ipynb`): agente reflejo que resuelve el problema clásico del cruce del río
+- **E2 – Aspiradora** (`FIA 25 26 Agentes Reflex.ipynb`): agente reflejo para el entorno de la aspiradora, con tests de validación
+
+### 🔍 P2 – Algoritmos de Búsqueda
+*Estrategias de búsqueda para resolución de problemas*
+- Documentación y enunciado en `P2.pdf`
+- Algoritmos de búsqueda no informada (BFS, DFS) e informada (A*)
+
+### ♟️ P3 – MinMax
+*Algoritmo de búsqueda adversarial para juegos de dos jugadores*
+- `MinMax.py`: implementación del algoritmo MinMax con poda alfa-beta
+
+### 🧩 P4 – Lógica
+*Representación del conocimiento y razonamiento lógico*
+- `einstein_puzzle_(FIA24).ipynb`: resolución del famoso puzzle de Einstein mediante lógica proposicional y satisfacibilidad (SAT)
+- Enunciado en `Practice Logica.pdf`
+
+### 📊 P5 – Inferencia Bayesiana
+*Razonamiento probabilístico y redes bayesianas*
+- `problema1.py`: modelado e inferencia en una red bayesiana (problema 1)
+- `problema2.py`: modelado e inferencia en una red bayesiana (problema 2)
+- Enunciado en `practica inferencia.pdf`
+
+### 🏆 Proyecto Final
+*Proyecto integrador que combina MDP, inferencia bayesiana y agentes autónomos*
+- `river_mdp.py`: resolución de un MDP de cruce de río mediante value iteration
+- `palacio_bayesiano.py`: agente que razona con incertidumbre en el Palacio Bayesiano
+- `kurtz.py` + `funciones_kurtz.py`: agente para el escenario Kurtz
+- `funciones_comunes.py`: utilidades compartidas entre los distintos agentes
+- Memoria completa en `Proyecto final FIA.pdf`
+
+---
+
+## 🏗️ Estructura de la Carpeta
 
 ```
-Practicas/
-│
-└── Principales/                  # Prácticas principales del curso
-
+Fundamentos de la IA/
+├── P1 - Introduccion/
+│   ├── E1-rio/                        # Agente reflejo: cruce del río
+│   │   ├── Rivercrossing Reflex.ipynb
+│   │   └── Ejercicio 1.pdf
+│   └── E2-aspiradora/                 # Agente reflejo: aspiradora
+│       ├── FIA 25 26 Agentes Reflex.ipynb
+│       ├── Ejercicio 2.pdf
+│       └── Tests aspiradora/
+├── P2 - Algoritmos_Busqueda/
+│   └── P2.pdf                         # Enunciado y documentación
+├── P3 - MinMax/
+│   └── MinMax.py                      # Algoritmo MinMax con poda alfa-beta
+├── P4 - Logica/
+│   ├── einstein_puzzle_(FIA24).ipynb  # Puzzle de Einstein con lógica SAT
+│   └── Practice Logica.pdf
+├── P5 - Inferencia Bayesiana/
+│   ├── problema1.py                   # Red bayesiana problema 1
+│   ├── problema2.py                   # Red bayesiana problema 2
+│   └── practica inferencia.pdf
+└── Proyecto final/
+    ├── river_mdp.py                   # MDP cruce del río
+    ├── palacio_bayesiano.py           # Agente Palacio Bayesiano
+    ├── kurtz.py                       # Agente Kurtz
+    ├── funciones_kurtz.py
+    ├── funciones_comunes.py
+    └── Proyecto final FIA.pdf
 ```
 
-Cada práctica incluye:
-
-* Código fuente implementando algoritmos de IA
-* Datasets utilizados para entrenamiento y prueba
-* Documentación técnica explicando el enfoque
-* Análisis de resultados y métricas de evaluación
-
 ---
 
-## 🚀 Propósito del Repositorio
+## 🛠️ Tecnologías y Herramientas
 
-Más que un simple archivo de entregas, este repositorio funciona como un **diario de aprendizaje**.
-Cada carpeta refleja la evolución de mis habilidades: desde los algoritmos de búsqueda básicos hasta modelos de machine learning más sofisticados.
-
-Aquí se documentan:
-
-* 🧩 **Ejercicios iniciales** para asimilar los fundamentos de IA
-* ⚙️ **Prácticas aplicadas** con problemas reales
-* 📚 **Material de referencia** empleado durante el curso
-* 🧠 **Reflexiones personales** sobre las decisiones algorítmicas y su impacto
-* 💬 **Entregables finales**, con código y análisis cuidadosamente documentados
-
-> "La inteligencia artificial es la nueva electricidad."
-> — *Andrew Ng*
-
----
-
-## 🧠 Aprendizajes Clave
-
-Durante el curso he aprendido que **la IA no es solo ciencia ficción**, sino **matemáticas aplicadas y algoritmos cuidadosamente diseñados**: entender cómo los modelos aprenden de los datos y generalizan a situaciones nuevas.
-
-Algunos aprendizajes esenciales que me llevo son:
-
-* La importancia de la **calidad de los datos** sobre la complejidad del modelo
-* La **relación entre sesgo y varianza** en el aprendizaje automático
-* El valor de la **evaluación rigurosa** de los modelos
-* La necesidad de **consideraciones éticas** en sistemas autónomos
-* Y, sobre todo, que cada problema requiere analizar qué tipo de solución de IA es más apropiada
+| Área | Tecnologías |
+|------|-------------|
+| **Lenguaje** | Python 3 |
+| **Notebooks** | Jupyter Notebook |
+| **Lógica / SAT** | `python-sat`, lógica proposicional |
+| **Probabilidad** | `pgmpy`, redes bayesianas |
+| **MDP / RL** | Implementación desde cero con NumPy |
+| **Visualización** | Matplotlib |
 
 ---
 
 ## ⚙️ Requisitos y Uso
 
-Para ejecutar los algoritmos y modelos de este repositorio:
-
-1. Clona el repositorio:
+1. Instala las dependencias:
 
    ```bash
-   git clone https://github.com/tuusuario/fia-imat.git
-   cd fia-imat
+   pip install numpy pandas matplotlib jupyter pgmpy python-sat
    ```
 
-2. Instala las dependencias:
+2. Ejecuta un script Python:
 
    ```bash
-   pip install numpy pandas scikit-learn matplotlib jupyter
+   python "P3 - MinMax/MinMax.py"
+   python "P5 - Inferencia Bayesiana/problema1.py"
+   python "Proyecto final/river_mdp.py"
    ```
 
-3. Ejecuta los algoritmos:
-
-   ```bash
-   python Practicas/Principales/P2 - Clasificacion/arbol_decision.py
-   ```
-
-4. O abre los notebooks de Jupyter:
+3. O abre los notebooks de Jupyter:
 
    ```bash
    jupyter notebook
@@ -105,21 +128,17 @@ Para ejecutar los algoritmos y modelos de este repositorio:
 
 ---
 
-## 🔗 Más Sobre Mí
-
-Además de este proyecto académico, también desarrollo otros trabajos relacionados con **ingeniería matemática, ciencia de datos, aprendizaje automático y optimización**.
-Puedes encontrar más sobre mis proyectos personales y académicos en mi **portfolio**.
-
----
-
 ## 📬 Contacto
 
-¿Te interesa comentar alguna práctica, compartir ideas o colaborar en proyectos de inteligencia artificial?
-📩 Puedes escribirme si te apasiona hablar de **algoritmos de IA, machine learning, procesamiento de datos o matemáticas aplicadas**.
+¿Interesado en discutir alguna práctica o colaborar?
+
+📧 **Contacto**: [claudialbombin@alu.icai.comillas.edu](mailto:claudialbombin@alu.icai.comillas.edu)
+🔗 **LinkedIn**: [www.linkedin.com/in/claudia-lopez-bombin](https://www.linkedin.com/in/claudia-lopez-bombin)
+🐙 **GitHub**: [github.com/claudialbzz](https://github.com/claudialbzz)
 
 ---
 
-🧭 **Keep learning. Keep building. Keep evolving.**
+> "La inteligencia artificial es la nueva electricidad."
+> — *Andrew Ng*
 
-> "La pregunta de si una máquina puede pensar es tan relevante como la pregunta de si un submarino puede nadar."
-> — *Edsger Dijkstra*
+🧭 **Keep learning. Keep building. Keep evolving.**
