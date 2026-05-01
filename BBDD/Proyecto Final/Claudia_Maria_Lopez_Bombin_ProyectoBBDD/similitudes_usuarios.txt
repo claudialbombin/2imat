@@ -1,0 +1,2 @@
+usuario1,usuario2,similitud
+A18EUQFB1I3CGA,A3OQNAJ33UDWH1,1.0
