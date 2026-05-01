@@ -1,0 +1,21 @@
+[project-root]
+├── .vscode
+│   └── settings.json
+├── pytest.ini
+└── tests
+    └── test_hello.py
+
+settings.json:
+{
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true
+}
+
+pytest.ini:
+[pytest]
+testpaths = tests
+
+test_hello.py:
+def test_hello():
+    assert 1 + 1 == 2
