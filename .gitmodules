@@ -7,3 +7,6 @@
 [submodule "Aprendizaje Automatico/P2 - KNN"]
 	path = Aprendizaje Automatico/P2 - KNN
 	url = https://github.com/ICAI-IMAT-ML/p2-2-knn-claudialbombin.git
+[submodule "Aprendizaje Automatico/P3 - Regresion Linear"]
+	path = Aprendizaje Automatico/P3 - Regresion Linear
+	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
