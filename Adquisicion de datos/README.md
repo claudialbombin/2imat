@@ -15,10 +15,12 @@ En el marco del grado iMAT, combina los fundamentos matemáticos y estadísticos
 Durante el curso se trabajan aspectos como:
 
 * 🐼 **Manejo avanzado de pandas** para manipulación de DataFrames
-* 🤖 **Implementación de autómatas** para búsqueda y procesamiento de texto
-* 🎵 **Procesamiento de datos complejos** como datasets de Spotify
+* 🤖 **Implementación de autómatas** (AFD) para búsqueda y procesamiento de texto
+* 🎵 **Procesamiento de datos complejos** como datasets de Spotify y Airbnb
 * 📊 **Limpieza y transformación de datos** reales
 * 🔍 **Técnicas de exploración inicial** de datasets
+* 🌐 **Desarrollo web con Flask** para presentación de datos (CV interactivo)
+* 🕷️ **Web scraping con Scrapy** para adquisición automatizada de datos desde la web
 
 Cada práctica busca desarrollar una habilidad concreta —desde dominar la sintaxis de pandas hasta construir pipelines completos de procesamiento de datos.
 
@@ -27,10 +29,33 @@ Cada práctica busca desarrollar una habilidad concreta —desde dominar la sint
 ## 💻 Estructura del Repositorio
 
 ```
-Practicas/
+Adquisicion de datos/
 ├── Guiadas/                      # Ejercicios guiados por temática
+│   ├── Color/                    #   → Autómata para detectar colores en cadenas de texto
+│   ├── Pandas/                   #   → Introducción a pandas: notebooks con ejercicios y soluciones
+│   └── Spotify/                  #   → Análisis exploratorio de datos de Spotify (dataset real)
 │
-└── Practicas/                    # Prácticas principales del curso
+├── P1 - Automatas/               # Práctica 1: Autómatas Finitos Deterministas (AFD) en Python
+│   ├── automata_main.py          #   → AFD que detecta si una cadena contiene el patrón "ajo"
+│   └── search_main.py            #   → AFD genérico: busca cualquier patrón introducido por el usuario y cuenta ocurrencias
+│
+├── P2 - Intro_Pandas/            # Práctica 2: Análisis de datos con pandas
+│   ├── airbnb_main.py            #   → Limpieza, transformación y análisis del dataset de Airbnb
+│   ├── airbnb.csv                #   → Dataset de listados de Airbnb
+│   ├── population.csv            #   → Dataset de población por barrio
+│   └── Práctica 2 - Introducción a pandas.pdf  # Enunciado de la práctica
+│
+├── P3 - CV html/                 # Práctica 3: Curriculum Vitae web con Flask
+│   ├── app.py                    #   → Aplicación Flask con rutas: página principal, CV y formulario de contacto
+│   ├── static/                   #   → Recursos estáticos (CSS, imágenes)
+│   └── templates/                #   → Plantillas HTML (index, cv, contact)
+│
+└── Proyecto Final/               # Proyecto Final: scraping y análisis de datos de Fórmula 1
+    ├── f1spiders.py              #   → Spider con Scrapy que extrae resultados de carrera de Wikipedia (2012–2024)
+    ├── funciones_api.py          #   → Funciones auxiliares para consumo de API
+    ├── merge_data.py             #   → Script de fusión de datasets
+    ├── merge_limpio.py           #   → Versión limpia del merge
+    └── data/                     #   → CSVs generados por el spider (un archivo por carrera y año)
 ```
 
 Cada práctica incluye:
@@ -87,13 +112,20 @@ Para ejecutar los notebooks o scripts de este repositorio:
 2. Instala las dependencias:
 
    ```bash
-   pip install pandas numpy jupyter
+   pip install pandas numpy jupyter flask scrapy
    ```
 
 3. Abre cualquier práctica en Jupyter Notebook o ejecuta los scripts directamente:
 
    ```bash
-   python Practicas/Principales/P1\ -\ Automatas/automata_main.py
+   # Ejemplo: Práctica 1 – Autómatas
+   python "P1 - Automatas/automata_main.py"
+
+   # Ejemplo: Proyecto Final – Spider de F1
+   python "Proyecto Final/f1spiders.py"
+
+   # Ejemplo: Práctica 3 – CV web con Flask
+   python "P3 - CV html/app.py"
    ```
 
 ---
