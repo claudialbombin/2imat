@@ -1,0 +1,196 @@
+<!-- Extiende la plantilla base -->
+{% extends "base.html" %}
+
+<!-- Define el contenido específico de esta página -->
+{% block content %}
+    <!-- Encabezado del CV -->
+    <header class="cv-header">
+        <h1>Claudia María López Bombín</h1>
+        <h2>Estudiante de Ingeniería Matemática e Inteligencia Artificial</h2>
+        <!-- Información de contacto en el encabezado -->
+        <p>202312774@ALU.COMILLAS.EDU | CLAUDIALBOMBIN@GMAIL.COM | +34 639593056</p>
+        <p><a href="https://bit.ly/claudialbombin-linkedin">LinkedIn</a></p>
+    </header>
+
+    <!-- Sección de resumen -->
+    <section class="cv-section">
+        <h2>Resumen</h2>
+        <p>
+            Apasionada por el conocimiento, enérgica en el aprendizaje, colaboración y desarrollo personal en entornos diversos. 
+            Actualmente enfocada en mis estudios de ingeniería, así como en mejorar mis habilidades como oradora y debatiente.
+        </p>
+    </section>
+
+    <!-- Sección de experiencia laboral -->
+    <section class="cv-section">
+        <h2>Experiencia Laboral</h2>
+        
+        <!-- Experiencia 1 -->
+        <div class="experience-item">
+            <h3>Cost Report Engineer / ISC Racing Team</h3>
+            <p class="date">Abril 2024 - Presente</p>
+            <p>
+                El departamento de costes y fabricación supervisa las pruebas estáticas para la competición. 
+                Realicé seguimiento de la BOM, incluyendo CBOM y DBOM, y verifiqué los dibujos industriales. 
+                Además, contribuí al EDR (Engineering Design Report) y CEF (Cost Explanation File), 
+                justificando avances y cambios en el coche prototipo de este año.
+            </p>
+        </div>
+        
+        <!-- Experiencia 2 -->
+        <div class="experience-item">
+            <h3>Dean of Culture / CMU Santa Maria del Pino</h3>
+            <p class="date">Septiembre 2024 – Presente</p>
+            <p>
+                Participación en el consejo rector del Colegio Mayor, proponiendo y organizando actividades 
+                culturales y de desarrollo personal para los demás residentes del CMU.
+            </p>
+        </div>
+        
+        <!-- Experiencia 3 -->
+        <div class="experience-item">
+            <h3>Summer Staff Intern / Empower Peace</h3>
+            <p class="date">Julio 2022 – Agosto 2022</p>
+            <p>
+                Participación en la organización y proceso de selección para la experiencia 'Women2Women' 
+                de la Embajada de EE.UU. Responsable de 100+ jóvenes mujeres emprendedoras de 70+ países.
+            </p>
+        </div>
+        
+        <!-- Experiencia 4 -->
+        <div class="experience-item">
+            <h3>Technovation National Ambassador / Inspire Girls</h3>
+            <p class="date">2020 - Presente</p>
+            <p>
+                Representante española del programa. Participación en los procesos de organización y 
+                coordinación de las fases regionales y nacionales. Miembro del equipo de adjudicación 
+                y jurado en los torneos principales.
+            </p>
+        </div>
+        
+        <!-- Experiencia 5 -->
+        <div class="experience-item">
+            <h3>Girl Global Get Ready Mentor / US Embassy</h3>
+            <p class="date">2020 - Presente</p>
+            <p>
+                Representante española del programa organizado por las embajadas de EE.UU. alrededor del mundo. 
+                Mentoría de chicas de Europa del Este y Asia a través de talleres mientras les enseño inglés.
+            </p>
+        </div>
+    </section>
+
+    <!-- Sección de educación -->
+    <section class="cv-section">
+        <h2>Educación</h2>
+        
+        <!-- Educación 1 -->
+        <div class="education-item">
+            <h3>Grado en Ingeniería Matemática e Inteligencia Artificial</h3>
+            <p class="institution">Universidad Pontificia Comillas ICAI – ETSI</p>
+            <p class="date">Mayo 2028</p>
+        </div>
+        
+        <!-- Educación 2 -->
+        <div class="education-item">
+            <h3>42 Telefónica Cursus</h3>
+            <p class="institution">42 – Fundación Telefónica</p>
+            <p class="date">Mayo 2028</p>
+            <p>
+                Actualmente inscrita en el Cursus en 42 Madrid, aprendiendo a través de formación intensiva basada en proyectos. 
+                Competente en C con énfasis en gestión de memoria, algoritmos y estructuras de datos; 
+                con experiencia en Python para automatización, procesamiento de datos y resolución de problemas. 
+                Uso diario de entornos Linux incluye scripting de shell, gestión de procesos y administración de sistemas. 
+                Los proyectos en equipo fortalecen la colaboración, revisiones de código entre pares y flujos de trabajo con Git.
+            </p>
+        </div>
+        
+        <!-- Educación 3 -->
+        <div class="education-item">
+            <h3>Bachillerato Internacional</h3>
+            <p class="institution">IES Alfonso X el Sabio</p>
+            <p class="date">Julio 2023</p>
+            <p>
+                Completado en la modalidad científico-tecnológica con una puntuación de 27. 
+                Especialización en investigación y trabajo de laboratorio en las asignaturas de física, química y ciencias ambientales.
+            </p>
+        </div>
+    </section>
+
+    <!-- Sección de habilidades -->
+    <section class="cv-section">
+        <h2>Habilidades</h2>
+        
+        <!-- Subsección de idiomas -->
+        <div class="skills-subsection">
+            <h3>Idiomas</h3>
+            <!-- Tabla de idiomas -->
+            <table class="languages-table">
+                <thead>
+                    <tr>
+                        <th>Idioma</th>
+                        <th>Nivel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Inglés</td>
+                        <td>C2 Cambridge, 110 TOEFL y 8.0 IELTS</td>
+                    </tr>
+                    <tr>
+                        <td>Español</td>
+                        <td>Nativo</td>
+                    </tr>
+                    <tr>
+                        <td>Francés</td>
+                        <td>DELF A2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Subsección de debate y public speaking -->
+        <div class="skills-subsection">
+            <h3>Debate y Public Speaking</h3>
+            <h4>Speaker</h4>
+            <ul>
+                <li>VII BP Asun Almajano - winner</li>
+                <li>World University Debate Championship Panama 2025 – third best Spanish-speaking team</li>
+                <li>IX BP Ciudad de Murcia – finalist</li>
+                <li>III BP SEPI – finalist</li>
+                <li>III BP Medel – finalist</li>
+                <li>VIII Asun Almajano - finalist</li>
+                <li>Torneo Nacional de Debate de Colegios Mayores 2025– semifinalist</li>
+                <li>Trofeo Rector 2024 – quarterfinalist</li>
+                <li>IX BP UAM</li>
+                <li>X BP Murcia</li>
+                <li>BP Elias Ahuja 2023</li>
+                <li>Liga Universitaria de Debate Universitario 2023-2024</li>
+                <li>Torneo Isabel de España 2024</li>
+            </ul>
+            
+            <h4>Judging</h4>
+            <ul>
+                <li>VI BP Regenta – break and final</li>
+                <li>IV BP Mendel – break</li>
+                <li>II Torneo CUNEF</li>
+                <li>Torneo escolar de la Comunidad Autonoma de Madrid</li>
+                <li>BP CEU Interno – break and final</li>
+                <li>VII Precemude UAM</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Sección de voluntariado y liderazgo -->
+    <section class="cv-section">
+        <h2>Voluntariado y Liderazgo</h2>
+        <ul>
+            <li>Executive Vice President and leader of the finance team (finance department) of the DECA-EFA chapter.</li>
+            <li>Participant in the Technovation Girls program in the 2018, 2019, and 2020 editions.</li>
+            <li>National representative in the U.S. Embassy program 'W2W Virtual University.'</li>
+            <li>Participant in the First Lego League Murcia tournament (regional phase) in the 2018, 2019, and 2020 editions.</li>
+            <li>Participant in the First Lego League Spain tournament (national phase) in the 2019 edition.</li>
+            <li>Class Prefect/President 2018 – 2022.</li>
+            <li>Student Body President 2020 - 2022.</li>
+        </ul>
+    </section>
+{% endblock %}

@@ -1,0 +1,25 @@
+<!-- Extiende la plantilla base -->
+{% extends "base.html" %}
+
+<!-- Define el contenido específico de esta página -->
+{% block content %}
+    <!-- Sección de introducción -->
+    <section class="intro">
+        <!-- Título principal -->
+        <h1>¡Hola! Soy Claudia María López Bombín</h1>
+        
+        <!-- Imagen de perfil -->
+        <img src="{{ url_for('static', filename='profile.jpg') }}" alt="Foto de Claudia María López Bombín" class="centered">
+        
+        <!-- Texto de introducción -->
+        <p class="intro-text">
+            Apasionada por el conocimiento, enérgica en el aprendizaje, colaboración y desarrollo personal en entornos diversos. 
+            Actualmente enfocada en mis estudios de ingeniería, así como en mejorar mis habilidades como oradora y debatiente.
+        </p>
+        
+        <!-- Mensaje de bienvenida -->
+        <p class="welcome">
+            ¡Bienvenido/a a mi página personal!
+        </p>
+    </section>
+{% endblock %}

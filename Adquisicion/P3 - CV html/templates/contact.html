@@ -1,0 +1,66 @@
+<!-- Extiende la plantilla base -->
+{% extends "base.html" %}
+
+<!-- Define el contenido específico de esta página -->
+{% block content %}
+    <!-- Si el formulario ha sido enviado, mostrar confirmación -->
+    {% if form_submitted %}
+        <section class="confirmation">
+            <h1>¡Formulario enviado!</h1>
+            <p>Gracias por contactarme. He recibido tu mensaje y me pondré en contacto contigo pronto.</p>
+            <p>Te enviaré una confirmación a tu email en breve.</p>
+            <!-- Enlace para volver a la página de inicio -->
+            <a href="{{ url_for('index') }}" class="back-link">Volver a la página principal</a>
+        </section>
+    {% else %}
+        <!-- Si no se ha enviado el formulario, mostrar formulario de contacto -->
+        <section class="contact-info">
+            <h1>Contacto</h1>
+            
+            <!-- Información de contacto -->
+            <div class="contact-details">
+                <h2>Información de Contacto</h2>
+                <ul>
+                    <li><strong>Email:</strong> 202312774@ALU.COMILLAS.EDU</li>
+                    <li><strong>Email personal:</strong> CLAUDIALBOMBIN@GMAIL.COM</li>
+                    <li><strong>Teléfono:</strong> +34 639593056</li>
+                    <li><strong>LinkedIn:</strong> <a href="https://bit.ly/claudialbombin-linkedin">https://bit.ly/claudialbombin-linkedin</a></li>
+                </ul>
+            </div>
+            
+            <!-- Formulario de contacto -->
+            <div class="contact-form">
+                <h2>Formulario de Contacto</h2>
+                <!-- Formulario que se enviará por POST -->
+                <form method="POST">
+                    <!-- Campo para el nombre -->
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <!-- Campo para el email -->
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <!-- Campo para el asunto -->
+                    <div class="form-group">
+                        <label for="subject">Asunto:</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    
+                    <!-- Campo para el mensaje -->
+                    <div class="form-group">
+                        <label for="message">Mensaje:</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <!-- Botón de envío -->
+                    <button type="submit" class="submit-btn">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

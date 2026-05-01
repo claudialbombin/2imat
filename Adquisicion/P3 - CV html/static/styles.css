@@ -1,0 +1,263 @@
+/* Estilos generales para toda la página */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Contenedor principal */
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: #ddd;
+}
+
+/* Estilos para la página de inicio */
+.intro {
+    text-align: center;
+    padding: 20px;
+}
+
+.intro h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.centered {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid #2c3e50;
+}
+
+.intro-text {
+    font-size: 1.1em;
+    margin: 20px 0;
+    text-align: justify;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 30px;
+}
+
+/* Estilos para la página del CV */
+.cv-header {
+    text-align: center;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.cv-header h1 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.cv-header h2 {
+    color: #7f8c8d;
+    margin-top: 0;
+    font-weight: normal;
+}
+
+.cv-section {
+    margin-bottom: 30px;
+}
+
+.cv-section h2 {
+    color: #2c3e50;
+    border-bottom: 1px solid #bdc3c7;
+    padding-bottom: 5px;
+}
+
+.experience-item, .education-item {
+    margin-bottom: 20px;
+}
+
+.experience-item h3, .education-item h3 {
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.date {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 0;
+}
+
+.institution {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.skills-subsection {
+    margin-bottom: 20px;
+}
+
+.skills-subsection h3 {
+    color: #34495e;
+}
+
+.skills-subsection h4 {
+    color: #7f8c8d;
+    margin-top: 15px;
+}
+
+/* Estilos para la tabla de idiomas */
+.languages-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.languages-table th, .languages-table td {
+    border: 1px solid #bdc3c7;
+    padding: 8px;
+    text-align: left;
+}
+
+.languages-table th {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+/* Estilos para la página de contacto */
+.contact-info h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-details, .contact-form {
+    margin-bottom: 30px;
+}
+
+.contact-details h2, .contact-form h2 {
+    color: #34495e;
+    border-bottom: 1px solid #bdc3c7;
+    padding-bottom: 5px;
+}
+
+.contact-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-details li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para el formulario */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.submit-btn:hover {
+    background-color: #34495e;
+}
+
+/* Estilos para la página de confirmación */
+.confirmation {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.confirmation h1 {
+    color: #27ae60;
+    margin-bottom: 20px;
+}
+
+.confirmation p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.back-link:hover {
+    background-color: #34495e;
+}
+
+/* Estilos para listas */
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 5px;
+}
