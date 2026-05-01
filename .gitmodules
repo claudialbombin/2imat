@@ -22,3 +22,6 @@
 [submodule "Aprendizaje Automatico/P7 - LDA"]
 	path = Aprendizaje Automatico/P7 - LDA
 	url = https://github.com/ICAI-IMAT-ML/p2-7-lda-claudialbombin.git
+[submodule "Aprendizaje Automatico/P8 - Arboles de Decision"]
+	path = Aprendizaje Automatico/P8 - Arboles de Decision
+	url = https://github.com/ICAI-IMAT-ML/p2-8-decision-tree-claudialbombin.git
