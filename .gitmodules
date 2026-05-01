@@ -28,3 +28,9 @@
 [submodule "P3 - Regresion Lineal I"]
 	path = P3 - Regresion Lineal I
 	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
+[submodule "Aprendizaje Automatico/P3 - Regresion Lineal"]
+	path = Aprendizaje Automatico/P3 - Regresion Lineal
+	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
+[submodule "Aprendizaje Automatico/P3 - Regresion Lineal I"]
+	path = Aprendizaje Automatico/P3 - Regresion Lineal I
+	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
