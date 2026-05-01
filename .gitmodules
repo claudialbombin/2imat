@@ -10,3 +10,15 @@
 [submodule "Aprendizaje Automatico/P3 - Regresion Linear"]
 	path = Aprendizaje Automatico/P3 - Regresion Linear
 	url = https://github.com/ICAI-IMAT-ML/p2-3-linear-regression-claudialbombin.git
+[submodule "Aprendizaje Automatico/P4 - Regresion Lineal II"]
+	path = Aprendizaje Automatico/P4 - Regresion Lineal II
+	url = https://github.com/ICAI-IMAT-ML/p2-4-linear-regression-ii-claudialbombin.git
+[submodule "Aprendizaje Automatico/P5 - Regresion Logistica"]
+	path = Aprendizaje Automatico/P5 - Regresion Logistica
+	url = https://github.com/ICAI-IMAT-ML/p2-5-logistic-regression-claudialbombin.git
+[submodule "Aprendizaje Automatico/P6 - Validacion Cruzada"]
+	path = Aprendizaje Automatico/P6 - Validacion Cruzada
+	url = https://github.com/ICAI-IMAT-ML/p2-6-cross-validation-claudialbombin.git
+[submodule "Aprendizaje Automatico/P7 - LDA"]
+	path = Aprendizaje Automatico/P7 - LDA
+	url = https://github.com/ICAI-IMAT-ML/p2-7-lda-claudialbombin.git
