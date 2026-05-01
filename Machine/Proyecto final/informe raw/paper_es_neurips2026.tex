@@ -1,0 +1,305 @@
+\documentclass{article}
+\usepackage{neurips_2026}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
+
+\title{Predicci\'on del \'Exito Acad\'emico en Educaci\'on Superior:\\Un Enfoque de Aprendizaje Autom\'atico}
+
+\author{%
+  Claudia Mar\'ia L\'opez Bomb\'in \\
+  Grado en Ingenier\'ia Matem\'atica (IMAT) $\cdot$ Clase B $\cdot$ 2.º Curso \\
+  Proyecto Final --- Aprendizaje Autom\'atico $\cdot$ Comillas ICAI $\cdot$ 2025/2026 \\
+  \texttt{claudialbombin@alu.icai.comillas.edu} $\cdot$ \texttt{202312774@alu.comillas.edu}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Se aborda la predicci\'on del \'exito acad\'emico en educaci\'on superior sobre un dataset de 4.424 estudiantes con informaci\'on demogr\'afica, socioecon\'omica y de rendimiento semestral. Se desarrollan tres tareas: (1)~\textbf{clasificaci\'on} de la situaci\'on final (Abandono/Matriculado/Graduado), donde Gradient Boosting alcanza F1-macro~$= 0{,}716$ en CV 5-fold; (2)~\textbf{regresi\'on} de la nota media del 2.\textsuperscript{o} semestre (sin \textit{data leakage}), con $R^2 \approx 0{,}54$ y RMSE~$\approx 0{,}95$; y (3)~\textbf{clustering K-Means} ($k=4$) que identifica cuatro perfiles con tasas de abandono entre el 9\% y el 80\%. El rendimiento del primer semestre es el predictor dominante en ambas tareas supervisadas; variables socioecon\'omicas como el estado de pagos y la condici\'on de deudor complementan el perfil de riesgo.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Palabras clave:} predicci\'on de abandono acad\'emico, gradient boosting, clasificaci\'on multiclase, regresi\'on de nota media, clustering K-Means, sistema de alerta temprana, educaci\'on superior, data leakage, desbalanceo de clases.
+
+%---------------------------------------------------------------------
+\section{Introducci\'on}
+%---------------------------------------------------------------------
+
+El abandono estudiantil representa un desaf\'io cr\'itico para las instituciones de educaci\'on superior, con consecuencias tanto sociales como econ\'omicas. La identificaci\'on temprana de estudiantes en riesgo permite intervenciones oportunas y una asignaci\'on eficiente de recursos. Si bien trabajos previos han abordado este problema con datos administrativos \cite{realinho2022}, los estudios multi-tarea que combinan clasificaci\'on, regresi\'on y perfilado no supervisado son escasos.
+
+Contribuimos con un an\'alisis sistem\'atico en tres tareas complementarias sobre un dataset p\'ublico de una universidad portuguesa. Hallazgos principales: (i) el gradient boosting domina la clasificaci\'on; (ii) los modelos de ensemble capturan no linealidades entre semestres; (iii) K-Means recupera perfiles interpretables estratificados por riesgo; y (iv) la clase Matriculado es la m\'as dif\'icil de predecir por ambig\"uedad estructural en la etiqueta.
+
+%---------------------------------------------------------------------
+\section{Dataset y An\'alisis Exploratorio}
+%---------------------------------------------------------------------
+
+El dataset contiene \textbf{4.424 instancias}, \textbf{36 variables} y \textbf{sin valores nulos}. Las variables incluyen datos demogr\'aficos, contexto socioecon\'omico (beca, condici\'on de deudor, estado de matr\'icula), calificaciones previas y datos de matr\'icula y notas en dos semestres.
+
+\paragraph{Distribuci\'on de clases.} La variable objetivo presenta un desbalanceo moderado: Graduado 49,9\% (2.209), Abandono 32,1\% (1.421), Matriculado 17,9\% (794). Esto motiva el uso de F1-macro como m\'etrica principal y \texttt{class\_weight=`balanced'} en los clasificadores.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.38\linewidth}
+    \includegraphics[width=\linewidth]{00_distribucion_objetivo.jpg}
+    \caption{Distribuci\'on de la variable objetivo.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.56\linewidth}
+    \includegraphics[width=\linewidth]{00_correlacion_target_reg.jpg}
+    \caption{Correlaci\'on de Pearson con nota media 2.\textsuperscript{o} sem.}
+  \end{subfigure}
+  \caption{Desbalanceo de clases y correlaciones con el target de regresi\'on. Las variables del 2.\textsuperscript{o} semestre con $r>0{,}45$ son \textit{leakage} y se excluyen de la regresi\'on.}
+  \label{fig:eda}
+\end{figure}
+
+\paragraph{Hallazgos principales del EDA.} \texttt{nota\_media\_1sem} es el predictor individual m\'as potente ($r=0{,}82$). \texttt{matricula\_al\_dia} y \texttt{deudor} discriminan fuertemente el abandono. Las becas se asocian con mayor graduaci\'on; la modalidad vespertina presenta menor tasa de graduaci\'on.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{00_boxplots_por_objetivo.jpg}
+  \caption{Variables num\'ericas clave por situaci\'on acad\'emica. Los graduados tienen medianas m\'as altas en notas del 1.er semestre y asignaturas aprobadas. Los estudiantes que abandonan son sistem\'aticamente mayores al matricularse.}
+  \label{fig:boxplots}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Preprocesado y Decisiones Metodol\'ogicas}
+%---------------------------------------------------------------------
+
+\paragraph{Pipeline.} Todo el preprocesado se implementa dentro de un \texttt{ColumnTransformer}: \texttt{StandardScaler} para num\'ericas, \texttt{OneHotEncoder} para categ\'oricas de alta cardinalidad y codificaci\'on 0/1 para binarias. Partici\'on 80/20 estratificada. \texttt{RANDOM\_STATE = 42}.
+
+\paragraph{Data leakage en regresi\'on.} Se excluyen las variables del 2.\textsuperscript{o} semestre contempor\'aneas al target (\texttt{asignaturas\_2sem\_*}) y la variable objetivo. Incluirlas inflar\'ia el $R^2$ de forma espuria ($r=0{,}76$ entre \texttt{asignaturas\_2sem\_aprobadas} y el target).
+
+%---------------------------------------------------------------------
+\section{Tarea 1: Clasificaci\'on}
+%---------------------------------------------------------------------
+
+Se entrenaron cuatro modelos con CV 5-fold estratificada: Regresi\'on Log\'istica (RL), \'Arbol de Decisi\'on (AD), Random Forest (RF, 300 \'arboles) y Gradient Boosting (GB, 200 iter., lr$=0{,}05$).
+
+\begin{table}[h]
+\centering
+\caption{Resultados CV 5-fold para clasificaci\'on. \textbf{Negrita}: mejor valor por columna.}
+\label{tab:clasificacion}
+\vspace{0.3em}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Modelo} & \textbf{Accuracy} & \textbf{F1-macro} & \textbf{F1-weighted} \\
+\midrule
+Regresi\'on Log\'istica & 0,755 & 0,712 & 0,757 \\
+\'Arbol de Decisi\'on   & 0,703 & 0,668 & 0,718 \\
+Random Forest           & 0,779 & 0,690 & 0,756 \\
+Gradient Boosting       & \textbf{0,784} & \textbf{0,716} & \textbf{0,783} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{An\'alisis.} Gradient Boosting es el mejor modelo (F1-macro~$=0{,}716$). RL resulta muy competitiva pese a ser lineal. RF obtiene menor F1-macro porque sin pesos balanceados perjudica m\'as a la clase minoritaria. Aplicar \texttt{class\_weight=`balanced'} mejora el recall de Matriculado del 37\% al 56\% con p\'erdida moderada en Graduado.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.54\linewidth}
+    \includegraphics[width=\linewidth]{01_confusion_matrices.jpg}
+    \caption{Matrices de confusi\'on (test, 885 instancias).}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.43\linewidth}
+    \includegraphics[width=\linewidth]{01_efecto_desbalanceo.jpg}
+    \caption{Efecto de \texttt{class\_weight=`balanced'} (RL).}
+  \end{subfigure}
+  \caption{Evaluaci\'on en test. La clase Matriculado es la m\'as dif\'icil de predecir en todos los modelos.}
+  \label{fig:confusion}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.46\linewidth}
+    \includegraphics[width=\linewidth]{01_feature_importance_mdi.jpg}
+    \caption{MDI --- Random Forest.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.50\linewidth}
+    \includegraphics[width=\linewidth]{01_permutation_importance.jpg}
+    \caption{Permutation Importance --- RL.}
+  \end{subfigure}
+  \caption{Importancia de variables en clasificaci\'on. Ambas m\'etricas se\~nalan el rendimiento semestral, notas de acceso y estado de pagos como predictores clave.}
+  \label{fig:importance_clf}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Tarea 2: Regresi\'on}
+%---------------------------------------------------------------------
+
+Se predice \texttt{nota\_media\_2sem} usando solo informaci\'on previa al segundo semestre. Filtrado a notas mayores que cero: media $=12{,}73$, desv.\ t\'ip.~$\approx 1{,}4$.
+
+\begin{table}[h]
+\centering
+\caption{Resultados CV 5-fold para regresi\'on.}
+\label{tab:regresion}
+\vspace{0.3em}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \boldmath$R^2$ \\
+\midrule
+Ridge             & 1,063 & 0,843 & 0,374 \\
+Lasso             & 1,050 & 0,831 & 0,390 \\
+\'Arbol de Decisi\'on & 1,025 & 0,800 & 0,430 \\
+Random Forest     & 0,970 & 0,736 & 0,510 \\
+Gradient Boosting & \textbf{0,946} & \textbf{0,719} & \textbf{0,537} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.38\linewidth}
+    \includegraphics[width=\linewidth]{02_real_vs_predicho.jpg}
+    \caption{Real vs.\ predicho (GB).}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.58\linewidth}
+    \includegraphics[width=\linewidth]{02_comparativa_seleccion_vars.jpg}
+    \caption{Impacto de la selecci\'on de variables en $R^2$.}
+  \end{subfigure}
+  \caption{Diagn\'ostico de regresi\'on. Sin sesgo sistem\'atico en residuos. A\~nadir el 1.er semestre mejora el $R^2$ un 169\% ($0{,}20\to0{,}54$).}
+  \label{fig:regresion}
+\end{figure}
+
+\paragraph{An\'alisis.} Los modelos de ensemble superan ampliamente a los lineales ($\Delta R^2\approx0{,}16$), evidenciando relaciones no lineales entre semestres. \texttt{nota\_media\_1sem} domina la importancia (MDI~$\approx0{,}48$). Con informaci\'on disponible a mitad de curso se puede predecir el rendimiento del 2.\textsuperscript{o} semestre con antelaci\'on suficiente para activar programas de apoyo.
+
+%---------------------------------------------------------------------
+\section{Tarea 3: Aprendizaje No Supervisado}
+%---------------------------------------------------------------------
+
+Se seleccionaron 15 variables previas al resultado final: perfil de entrada, situaci\'on socioecon\'omica, rendimiento del 1.er semestre y contexto macroecon\'omico.
+
+\paragraph{Dimensionalidad y elecci\'on de $k$.} PCA requiere 8 componentes para el 80\% de varianza (PC1$=17\%$, PC2$=12{,}8\%$). El coeficiente de silueta se maximiza en $k=4$ (score~$\approx0{,}223$) con descenso abrupto para $k\geq5$.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.54\linewidth}
+    \includegraphics[width=\linewidth]{03_pca_varianza.jpg}
+    \caption{Varianza explicada por componentes PCA.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.43\linewidth}
+    \includegraphics[width=\linewidth]{03_kmeans_seleccion_k.jpg}
+    \caption{Codo y Silhouette para K-Means.}
+  \end{subfigure}
+  \caption{PCA requiere 8 componentes para el 80\% de varianza. Silhouette confirma $k=4$.}
+  \label{fig:pca_k}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Caracterizaci\'on de los 4 clusters. Valores en desviaciones t\'ipicas.}
+\label{tab:clusters}
+\vspace{0.3em}
+\begin{tabular}{clp{7cm}}
+\toprule
+\textbf{Cluster} & \textbf{Perfil} & \textbf{Rasgos principales} \\
+\midrule
+0 & Transici\'on incierta & Edad $+1{,}66$ std, notas medias. 43\% abandono, 43\% graduado. \\
+1 & Rendimiento moderado  & Admisi\'on $+0{,}85$ std, buen 1.er sem. 54\% graduado, 21\% abandono. \\
+2 & Alto rendimiento      & Admisi\'on y cualif.\ previa altas, sin deudas ($+1{,}72$ std). 80\% graduado. \\
+3 & \textbf{Alto riesgo} & Admisi\'on $-1{,}61$ std, 1.er sem.\ $-1{,}67$ std, alta deuda $+1{,}72$ std. \textbf{80\% abandono.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.50\linewidth}
+    \includegraphics[width=\linewidth]{03_heatmap_clusters.jpg}
+    \caption{Perfiles estandarizados de los clusters.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.46\linewidth}
+    \includegraphics[width=\linewidth]{03_clusters_objetivo_barras.jpg}
+    \caption{Composici\'on por situaci\'on acad\'emica.}
+  \end{subfigure}
+  \caption{Cluster 3 (alto riesgo): 80\% abandono. Cluster 2 (alto rendimiento): 80\% graduado.}
+  \label{fig:clusters}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{03_pca_clusters_vs_objetivo.jpg}
+  \caption{Proyecci\'on PCA 2D: K-Means (izq.), clustering jer\'arquico (centro) y situaci\'on real (dcha.). Ambos m\'etodos producen particiones muy similares, confirmando la robustez de los clusters.}
+  \label{fig:pca_proyeccion}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Discusi\'on}
+%---------------------------------------------------------------------
+
+\paragraph{Factores de riesgo convergentes.} Los tres an\'alisis convergen en la misma conclusi\'on: el abandono se asocia a bajo rendimiento inicial, situaci\'on econ\'omica comprometida y edad de matriculaci\'on elevada. El Cluster~3 concentra estudiantes con todos estos factores simult\'aneamente (80\% abandono), convirti\'endose en el objetivo prioritario de cualquier intervenci\'on institucional.
+
+\paragraph{Variables accionables.} Emergen dos categor\'ias de intervenci\'on. Primera, \emph{apoyo econ\'omico}: dirigir programas de ayuda financiera a deudores y estudiantes con matr\'icula pendiente antes de que el da\~no acad\'emico se acumule. Segunda, \emph{apoyo acad\'emico}: tutoring y mentoring intensivos en el primer semestre, abordando directamente el predictor dominante. Ambos ejes son identificables con informaci\'on disponible a mitad del primer a\~no.
+
+\paragraph{Potencial de alerta temprana.} El clasificador (F1-macro~$=0{,}716$, accuracy~$\approx78\%$) y el regresor ($R^2=0{,}54$, RMSE~$=0{,}95$) son operativos desde mediados del primer a\~no acad\'emico, haciendo factible la detecci\'on de riesgo en tiempo real sin necesidad de esperar a los resultados finales. El Cluster~3 proporciona adem\'as un mecanismo no supervisado, independiente de etiquetas, para el mismo fin.
+
+\paragraph{Limitaciones.} (i)~Correlaci\'on $\neq$ causalidad: una nota baja puede ser consecuencia de factores externos no recogidos en el dataset. (ii)~Dataset de una \'unica instituci\'on portuguesa: la generalizaci\'on a otros contextos educativos requiere validaci\'on externa. (iii)~Ambig\"uedad estructural en la etiqueta: la clase Matriculado incluye futuros graduados y futuros abandonos, introduciendo dificultad de predicci\'on irreducible (recall~$\approx38\%$ en todos los modelos).
+
+%---------------------------------------------------------------------
+\section{Conclusiones}
+%---------------------------------------------------------------------
+
+Se ha presentado un estudio multi-tarea de aprendizaje autom\'atico para la predicci\'on del \'exito acad\'emico en educaci\'on superior, abarcando clasificaci\'on, regresi\'on y clustering no supervisado sobre un dataset real de 4.424 estudiantes.
+
+Gradient Boosting supera consistentemente a los modelos competidores en ambas tareas supervisadas, alcanzando F1-macro~$=0{,}716$ en clasificaci\'on triclase y $R^2=0{,}54$ en regresi\'on de la nota media del 2.\textsuperscript{o} semestre sin data leakage. La nota media del primer semestre ($r=0{,}82$) es el predictor dominante en todos los an\'alisis, con indicadores socioecon\'omicos ---condici\'on de deudor y estado de matr\'icula--- como se\~nales de riesgo complementarias y directamente accionables.
+
+El clustering K-Means ($k=4$) identifica un perfil de alto riesgo (Cluster~3, 80\% abandono) caracterizado por nota de admisi\'on baja, mal rendimiento en el primer semestre y alta carga de deuda. Estas caracter\'isticas son directamente abordables mediante programas institucionales. Tanto los modelos supervisados como el no supervisado son desplegables a mitad del primer a\~no, haciendo operacionalmente factible un sistema de alerta temprana con poder predictivo significativo mucho antes de que se conozcan los resultados finales.
+
+Como trabajo futuro se propone: (i) aprendizaje por transferencia entre instituciones para mejorar la generalizaci\'on; (ii) modelado temporal de la progresi\'on semestre a semestre; y (iii) auditor\'ias de equidad para garantizar que las intervenciones no generen discriminaci\'on indirecta por atributos demogr\'aficos.
+
+%---------------------------------------------------------------------
+\begin{thebibliography}{9}
+
+\bibitem{realinho2022}
+V.~Realinho, J.~Machado, L.~Baptista y M.~Martins.
+\newblock Predicting Student Dropout and Academic Success.
+\newblock \emph{Data}, 7(11):146, 2022.
+
+\bibitem{breiman2001}
+L.~Breiman.
+\newblock Random Forests.
+\newblock \emph{Machine Learning}, 45:5--32, 2001.
+
+\bibitem{friedman2001}
+J.~H. Friedman.
+\newblock Greedy Function Approximation: A Gradient Boosting Machine.
+\newblock \emph{The Annals of Statistics}, 29(5):1189--1232, 2001.
+
+\bibitem{pedregosa2011}
+F.~Pedregosa et al.
+\newblock Scikit-learn: Machine Learning in Python.
+\newblock \emph{Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{jolliffe2002}
+I.~T. Jolliffe.
+\newblock \emph{Principal Component Analysis}, 2.\textsuperscript{a} ed.
+\newblock Springer, 2002.
+
+\end{thebibliography}
+
+\end{document}

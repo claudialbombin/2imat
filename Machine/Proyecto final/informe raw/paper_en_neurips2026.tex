@@ -1,0 +1,305 @@
+\documentclass{article}
+\usepackage{neurips_2026}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
+
+\title{Predicting Academic Success in Higher Education:\\A Machine Learning Approach}
+
+\author{%
+  Claudia Mar\'ia L\'opez Bomb\'in \\
+  Mathematical Engineering (IMAT), Class B, 2nd Year \\
+  Final Project --- Machine Learning $\cdot$ Comillas ICAI $\cdot$ 2025/2026 \\
+  \texttt{claudialbombin@alu.icai.comillas.edu} $\cdot$ \texttt{202312774@alu.comillas.edu}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We address the prediction of academic success in higher education using a dataset of 4,424 students with demographic, socioeconomic, and semester-level performance information. Three tasks are developed: (1)~\textbf{classification} of final academic status (Dropout/Enrolled/Graduate), where Gradient Boosting achieves F1-macro~$= 0.716$ on 5-fold CV; (2)~\textbf{regression} of the second-semester GPA (without data leakage), with $R^2 \approx 0.54$ and RMSE~$\approx 0.95$; and (3)~\textbf{K-Means clustering} ($k=4$) identifying four student profiles with dropout rates between 9\% and 80\%. First-semester performance is the dominant predictor in both supervised tasks; socioeconomic variables such as payment status and debtor condition complement the risk profile.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Keywords:} academic dropout prediction, gradient boosting, multi-class classification, GPA regression, K-Means clustering, early warning system, higher education, data leakage, class imbalance.
+
+%---------------------------------------------------------------------
+\section{Introduction}
+%---------------------------------------------------------------------
+
+Student dropout represents a critical challenge for higher education institutions worldwide, carrying both social and economic consequences. Early identification of at-risk students enables timely intervention and resource allocation. While prior work has addressed this problem using administrative data \cite{realinho2022}, comprehensive multi-task studies combining classification, regression, and unsupervised profiling remain underexplored.
+
+We contribute a systematic analysis across three complementary machine learning tasks on a publicly available Portuguese university dataset. Key findings: (i) gradient boosting dominates classification; (ii) ensemble models capture strong nonlinearities between semesters; (iii) K-Means recovers interpretable risk-stratified profiles; and (iv) the Enrolled class is hardest to predict due to structural label ambiguity.
+
+%---------------------------------------------------------------------
+\section{Dataset and Exploratory Analysis}
+%---------------------------------------------------------------------
+
+The dataset contains \textbf{4,424 instances}, \textbf{36 variables}, and \textbf{no missing values}. Features cover demographics, socioeconomic context (scholarship, debtor status, tuition payment), prior qualifications, and enrollment/grade data for two semesters.
+
+\paragraph{Class distribution.} The target shows moderate imbalance: Graduate 49.9\% (2,209), Dropout 32.1\% (1,421), Enrolled 17.9\% (794). This motivates F1-macro as the primary metric and \texttt{class\_weight=`balanced'} in classifiers.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.38\linewidth}
+    \includegraphics[width=\linewidth]{00_distribucion_objetivo.jpg}
+    \caption{Class distribution.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.56\linewidth}
+    \includegraphics[width=\linewidth]{00_correlacion_target_reg.jpg}
+    \caption{Pearson correlation with 2nd-sem.\ GPA.}
+  \end{subfigure}
+  \caption{Class imbalance and feature correlations with the regression target. Variables from the 2nd semester with $r>0.45$ are data leakage and excluded from regression.}
+  \label{fig:eda}
+\end{figure}
+
+\paragraph{Key findings.} \texttt{nota\_media\_1sem} is the strongest predictor ($r=0.82$). \texttt{matricula\_al\_dia} and \texttt{deudor} strongly discriminate dropout. Scholarship holders graduate more; evening students graduate less (consistent with a working-student profile).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{00_boxplots_por_objetivo.jpg}
+  \caption{Key numeric variables by academic status. Graduates have higher 1st-semester grades and more approved courses. Dropout students are systematically older at enrollment.}
+  \label{fig:boxplots}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Preprocessing and Methodology}
+%---------------------------------------------------------------------
+
+\paragraph{Pipeline.} All preprocessing is inside a \texttt{ColumnTransformer} to prevent leakage: \texttt{StandardScaler} for numeric features, \texttt{OneHotEncoder} for high-cardinality categoricals, 0/1 for binary variables. Stratified 80/20 split. \texttt{RANDOM\_STATE = 42}.
+
+\paragraph{Leakage in regression.} The 2nd-semester variables contemporaneous with the target (\texttt{asignaturas\_2sem\_*}) are excluded. Including them would inflate $R^2$ spuriously ($r=0.76$ between \texttt{asignaturas\_2sem\_aprobadas} and the target).
+
+%---------------------------------------------------------------------
+\section{Task 1: Classification}
+%---------------------------------------------------------------------
+
+Four classifiers evaluated via stratified 5-fold CV: Logistic Regression (LR), Decision Tree (DT), Random Forest (RF, 300 trees), Gradient Boosting (GB, 200 iters, lr$=0.05$).
+
+\begin{table}[h]
+\centering
+\caption{5-fold CV classification results. \textbf{Bold}: best per column.}
+\label{tab:classification}
+\vspace{0.3em}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{Accuracy} & \textbf{F1-macro} & \textbf{F1-weighted} \\
+\midrule
+Logistic Regression & 0.755 & 0.712 & 0.757 \\
+Decision Tree       & 0.703 & 0.668 & 0.718 \\
+Random Forest       & 0.779 & 0.690 & 0.756 \\
+Gradient Boosting   & \textbf{0.784} & \textbf{0.716} & \textbf{0.783} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Analysis.} GB achieves the best F1-macro ($=0.716$). LR is surprisingly competitive. RF scores lower F1-macro because unbalanced weights hurt the minority class. Applying \texttt{class\_weight=`balanced'} improves Enrolled recall from 37\% to 56\% at a moderate cost for Graduate.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.54\linewidth}
+    \includegraphics[width=\linewidth]{01_confusion_matrices.jpg}
+    \caption{Confusion matrices (test set, 885 instances).}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.43\linewidth}
+    \includegraphics[width=\linewidth]{01_efecto_desbalanceo.jpg}
+    \caption{Effect of \texttt{class\_weight=`balanced'} (LR).}
+  \end{subfigure}
+  \caption{Test evaluation. Enrolled is the hardest class to predict across all models.}
+  \label{fig:confusion}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.46\linewidth}
+    \includegraphics[width=\linewidth]{01_feature_importance_mdi.jpg}
+    \caption{MDI --- Random Forest.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.50\linewidth}
+    \includegraphics[width=\linewidth]{01_permutation_importance.jpg}
+    \caption{Permutation Importance --- LR.}
+  \end{subfigure}
+  \caption{Feature importance in classification. Both metrics highlight semester performance, admission grades, and payment status. 2nd-semester features dominate MDI but should be excluded in a real early-warning deployment.}
+  \label{fig:importance_clf}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Task 2: Regression}
+%---------------------------------------------------------------------
+
+We predict \texttt{nota\_media\_2sem} using only pre-2nd-semester information. Filtering to non-zero grades: mean $=12.73$, std $\approx 1.4$.
+
+\begin{table}[h]
+\centering
+\caption{5-fold CV regression results.}
+\label{tab:regression}
+\vspace{0.3em}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{RMSE} & \textbf{MAE} & \boldmath$R^2$ \\
+\midrule
+Ridge             & 1.063 & 0.843 & 0.374 \\
+Lasso             & 1.050 & 0.831 & 0.390 \\
+Decision Tree     & 1.025 & 0.800 & 0.430 \\
+Random Forest     & 0.970 & 0.736 & 0.510 \\
+Gradient Boosting & \textbf{0.946} & \textbf{0.719} & \textbf{0.537} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.38\linewidth}
+    \includegraphics[width=\linewidth]{02_real_vs_predicho.jpg}
+    \caption{Real vs.\ predicted (GB).}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.58\linewidth}
+    \includegraphics[width=\linewidth]{02_comparativa_seleccion_vars.jpg}
+    \caption{Impact of feature set on $R^2$.}
+  \end{subfigure}
+  \caption{Regression diagnostics. No systematic bias in residuals. Adding 1st-semester information improves $R^2$ by 169\% ($0.20\to0.54$).}
+  \label{fig:regression}
+\end{figure}
+
+\paragraph{Analysis.} Ensembles outperform linear models ($\Delta R^2\approx0.16$), evidencing nonlinear inter-semester relationships. \texttt{nota\_media\_1sem} dominates importance (MDI $\approx0.48$). Mid-year predictions are feasible with enough lead time to activate support programs.
+
+%---------------------------------------------------------------------
+\section{Task 3: Unsupervised Learning}
+%---------------------------------------------------------------------
+
+Fifteen pre-outcome features were used: admission profile, socioeconomic status, 1st-semester performance, and macroeconomic context.
+
+\paragraph{Dimensionality and $k$ selection.} PCA needs 8 components for 80\% variance (PC1$=17\%$, PC2$=12.8\%$). Silhouette peaks at $k=4$ (score $\approx0.223$), with a sharp drop for $k\geq5$.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.54\linewidth}
+    \includegraphics[width=\linewidth]{03_pca_varianza.jpg}
+    \caption{Explained variance by PCA components.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.43\linewidth}
+    \includegraphics[width=\linewidth]{03_kmeans_seleccion_k.jpg}
+    \caption{Elbow and Silhouette for K-Means.}
+  \end{subfigure}
+  \caption{PCA requires 8 components for 80\% variance. Silhouette confirms $k=4$.}
+  \label{fig:pca_k}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Characterization of the 4 clusters. Values in standard deviations.}
+\label{tab:clusters}
+\vspace{0.3em}
+\begin{tabular}{clp{7cm}}
+\toprule
+\textbf{Cluster} & \textbf{Profile} & \textbf{Main characteristics} \\
+\midrule
+0 & Uncertain transition & Age $+1.66$ std, average grades. 43\% dropout, 43\% graduate. \\
+1 & Moderate performance & Admission $+0.85$ std, good 1st sem. 54\% graduate, 21\% dropout. \\
+2 & High performance     & High admission \& prior qual., no debt ($+1.72$ std). 80\% graduate. \\
+3 & \textbf{High risk}  & Admission $-1.61$ std, 1st-sem $-1.67$ std, high debt $+1.72$ std. \textbf{80\% dropout.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.50\linewidth}
+    \includegraphics[width=\linewidth]{03_heatmap_clusters.jpg}
+    \caption{Standardized cluster profiles.}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.46\linewidth}
+    \includegraphics[width=\linewidth]{03_clusters_objetivo_barras.jpg}
+    \caption{Academic status per cluster.}
+  \end{subfigure}
+  \caption{Cluster 3 (high risk): 80\% dropout. Cluster 2 (high performance): 80\% graduate.}
+  \label{fig:clusters}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{03_pca_clusters_vs_objetivo.jpg}
+  \caption{2D PCA projection: K-Means (left), hierarchical clustering (centre), real academic status (right). Both methods produce similar partitions, confirming cluster robustness.}
+  \label{fig:pca_projection}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Discussion}
+%---------------------------------------------------------------------
+
+\paragraph{Convergent risk factors.} All three analyses agree: dropout is associated with low initial academic performance, precarious economic situation, and older enrollment age. Cluster~3 concentrates all these factors simultaneously (80\% dropout rate), making it the primary target for institutional intervention.
+
+\paragraph{Actionable interventions.} Two categories of intervention emerge. First, \emph{economic support}: targeting debtors and students with overdue tuition for financial aid before academic damage accumulates. Second, \emph{academic support}: intensive tutoring and mentoring in the first semester, directly addressing the dominant predictor. Both levers are identifiable from information available at mid-first-year.
+
+\paragraph{Early warning potential.} Both the classifier (F1-macro $=0.716$, accuracy $\approx78\%$) and the regressor ($R^2=0.54$, RMSE $=0.95$) are operational from the middle of the first academic year, making real-time risk flagging feasible without requiring end-of-year outcomes. Cluster~3 additionally provides an unsupervised, label-free mechanism for the same purpose.
+
+\paragraph{Limitations.} (i)~Correlation $\neq$ causation: low grades may reflect unmeasured external factors not captured in the dataset. (ii)~Single Portuguese institution: generalization to other educational contexts and countries requires external validation. (iii)~Structural label ambiguity: the Enrolled class conflates future graduates and future dropouts, creating irreducible prediction difficulty (recall $\approx38\%$ across all models).
+
+%---------------------------------------------------------------------
+\section{Conclusion}
+%---------------------------------------------------------------------
+
+We presented a comprehensive multi-task machine learning study on academic success prediction in higher education, covering classification, regression, and unsupervised clustering on a real-world dataset of 4,424 students.
+
+Gradient Boosting consistently outperforms competing models in both supervised tasks, achieving F1-macro $=0.716$ for three-class classification and $R^2=0.54$ for second-semester GPA regression without data leakage. The first-semester GPA ($r=0.82$) is the single dominant predictor across all analyses, with socioeconomic indicators---debtor status and tuition payment---providing complementary and actionable risk signals.
+
+K-Means clustering ($k=4$) identifies a high-risk profile (Cluster~3, 80\% dropout) characterized by low admission grades, poor first-semester performance, and high debt load. These characteristics are directly addressable through institutional programs. Both unsupervised and supervised models are deployable at mid-first-year, making an early-warning system operationally feasible with meaningful predictive power well before final outcomes are known.
+
+Future work should explore: (i) transfer learning across institutions to improve generalizability; (ii) temporal modeling of semester-by-semester progression; and (iii) fairness audits to ensure interventions do not inadvertently discriminate based on demographic attributes.
+
+%---------------------------------------------------------------------
+\begin{thebibliography}{9}
+
+\bibitem{realinho2022}
+V.~Realinho, J.~Machado, L.~Baptista, and M.~Martins.
+\newblock Predicting Student Dropout and Academic Success.
+\newblock \emph{Data}, 7(11):146, 2022.
+
+\bibitem{breiman2001}
+L.~Breiman.
+\newblock Random Forests.
+\newblock \emph{Machine Learning}, 45:5--32, 2001.
+
+\bibitem{friedman2001}
+J.~H. Friedman.
+\newblock Greedy Function Approximation: A Gradient Boosting Machine.
+\newblock \emph{The Annals of Statistics}, 29(5):1189--1232, 2001.
+
+\bibitem{pedregosa2011}
+F.~Pedregosa et al.
+\newblock Scikit-learn: Machine Learning in Python.
+\newblock \emph{Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{jolliffe2002}
+I.~T. Jolliffe.
+\newblock \emph{Principal Component Analysis}, 2nd ed.
+\newblock Springer, 2002.
+
+\end{thebibliography}
+
+\end{document}
