@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cheatsheet Raspberry Pi - Examen</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; padding: 16px; font-size: 13px; }
+  h1 { color: #58a6ff; text-align: center; padding: 12px; border-bottom: 2px solid #30363d; margin-bottom: 16px; font-size: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+  .card h2 { color: #f0883e; font-size: 13px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #30363d; }
+  pre { background: #0d1117; border-radius: 4px; padding: 10px; overflow-x: auto; font-size: 12px; line-height: 1.6; }
+  .kw  { color: #ff7b72; }   /* keywords */
+  .fn  { color: #d2a8ff; }   /* functions */
+  .str { color: #a5d6ff; }   /* strings/values */
+  .cm  { color: #8b949e; }   /* comments */
+  .num { color: #79c0ff; }   /* numbers */
+  .tag { display: inline-block; background: #1f6feb; color: #fff; border-radius: 3px; padding: 1px 6px; font-size: 10px; margin-right: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #21262d; color: #58a6ff; padding: 6px 8px; text-align: left; }
+  td { padding: 5px 8px; border-bottom: 1px solid #21262d; }
+  tr:hover td { background: #21262d; }
+  .green { color: #3fb950; } .red { color: #f85149; } .yellow { color: #e3b341; }
+</style>
+</head>
+<body>
+<h1>🍓 CHEATSHEET RASPBERRY Pi / iMAT — EXAMEN</h1>
+<div class="grid">
+
+  <!-- PINES -->
+  <div class="card">
+    <h2>📌 PINES TÍPICOS (CAMBIAR SEGÚN ENUNCIADO)</h2>
+    <table>
+      <tr><th>Pin</th><th>Función</th><th>Ejercicio</th></tr>
+      <tr><td class="yellow">LED 20</td><td>Extremo izquierdo / PWM pronto</td><td>1,2,3</td></tr>
+      <tr><td class="yellow">LED 21</td><td>Victoria ON / Derrota OFF</td><td>1,2,3</td></tr>
+      <tr><td class="yellow">LED 22</td><td>Centro del tablero / PWM tarde</td><td>1,2,3</td></tr>
+      <tr><td class="yellow">LED 23</td><td>PWM permanente (medir)</td><td>4</td></tr>
+      <tr><td class="yellow">LED 24</td><td>Extremo derecho / contador bit1</td><td>1,2,3</td></tr>
+      <tr><td class="yellow">LED 25</td><td>Contador bit0</td><td>1,2,3</td></tr>
+      <tr><td class="yellow">LED 27</td><td>Semáforo (verde=pulsa)</td><td>1,2,3</td></tr>
+      <tr><td class="green">BTN 16</td><td>Izquierda / START / RESET</td><td>1,2,3</td></tr>
+      <tr><td class="green">BTN 19</td><td>Derecha / Reacción jugador</td><td>1,2,3</td></tr>
+      <tr><td class="green">BTN 26</td><td>Salto random</td><td>1,2,3</td></tr>
+    </table>
+  </div>
+
+  <!-- API iMAT -->
+  <div class="card">
+    <h2>⚡ API iMAT — COMANDOS ESENCIALES</h2>
+    <pre><span class="cm"># Importar y crear objeto</span>
+<span class="kw">from</span> imatpy <span class="kw">import</span> iMAT
+hat = <span class="fn">iMAT</span>()
+
+<span class="cm"># LED digital</span>
+hat.<span class="fn">LED</span>(<span class="num">22</span>, <span class="kw">True</span>)    <span class="cm"># Encender</span>
+hat.<span class="fn">LED</span>(<span class="num">22</span>, <span class="kw">False</span>)   <span class="cm"># Apagar</span>
+
+<span class="cm"># Leer botón (activo bajo = 0)</span>
+<span class="kw">if</span> hat.<span class="fn">BTN</span>(<span class="num">16</span>) == <span class="num">0</span>:   <span class="cm"># pulsado</span>
+
+<span class="cm"># PWM en LED</span>
+hat.<span class="fn">PWMLED</span>(<span class="num">23</span>,
+    frequency=<span class="num">2</span>,      <span class="cm"># Hz</span>
+    dutycycle=<span class="num">0.30</span>)   <span class="cm"># 0.0-1.0</span></pre>
+  </div>
+
+  <!-- DETECCIÓN BOTÓN -->
+  <div class="card">
+    <h2>🔘 DETECCIÓN DE BOTÓN (con anti-rebote)</h2>
+    <pre><span class="kw">def</span> <span class="fn">boton_pulsado</span>(btn):
+    <span class="kw">if</span> hat.<span class="fn">BTN</span>(btn) == <span class="num">0</span>:
+        time.<span class="fn">sleep</span>(<span class="num">0.05</span>)        <span class="cm"># anti-rebote</span>
+        <span class="kw">if</span> hat.<span class="fn">BTN</span>(btn) == <span class="num">0</span>:
+            <span class="kw">while</span> hat.<span class="fn">BTN</span>(btn) == <span class="num">0</span>:
+                <span class="kw">pass</span>           <span class="cm"># espera suelta</span>
+            <span class="kw">return True</span>
+    <span class="kw">return False</span>
+
+<span class="cm"># Esperar con timeout</span>
+<span class="kw">def</span> <span class="fn">esperar_boton</span>(btn, timeout=<span class="kw">None</span>):
+    t0 = time.<span class="fn">time</span>()
+    <span class="kw">while True</span>:
+        <span class="kw">if</span> <span class="fn">boton_pulsado</span>(btn): <span class="kw">return True</span>
+        <span class="kw">if</span> timeout <span class="kw">and</span> time.<span class="fn">time</span>()-t0 > timeout:
+            <span class="kw">return False</span>
+        time.<span class="fn">sleep</span>(<span class="num">0.01</span>)</pre>
+  </div>
+
+  <!-- MOVIMIENTO -->
+  <div class="card">
+    <h2>🕹️ MOVIMIENTO DE POSICIÓN</h2>
+    <pre><span class="cm"># Mover (con límite duro)</span>
+pos = <span class="fn">min</span>(pos + <span class="num">1</span>, <span class="fn">len</span>(LEDS)-<span class="num">1</span>)  <span class="cm"># derecha</span>
+pos = <span class="fn">max</span>(pos - <span class="num">1</span>, <span class="num">0</span>)             <span class="cm"># izquierda</span>
+
+<span class="cm"># Mover (puede salirse → derrota)</span>
+pos += <span class="num">1</span>   <span class="cm"># derecha sin límite</span>
+pos -= <span class="num">1</span>   <span class="cm"># izquierda sin límite</span>
+
+<span class="cm"># Salto aleatorio</span>
+salto = random.<span class="fn">randint</span>(<span class="num">-2</span>, <span class="num">2</span>)  <span class="cm"># ← cambiar rango</span>
+pos += salto
+
+<span class="cm"># Actualizar LEDs</span>
+<span class="kw">def</span> <span class="fn">encender_led</span>(posicion):
+    <span class="kw">for</span> i, led <span class="kw">in</span> <span class="fn">enumerate</span>(LEDS):
+        hat.<span class="fn">LED</span>(led, i == posicion)
+
+<span class="cm"># Comprobar derrota</span>
+<span class="kw">if</span> pos < <span class="num">0</span> <span class="kw">or</span> pos >= <span class="fn">len</span>(LEDS):
+    <span class="cm"># PERDISTE</span></pre>
+  </div>
+
+  <!-- PWM -->
+  <div class="card">
+    <h2>💡 PWM — INTENSIDAD POR DISTANCIA</h2>
+    <pre><span class="cm"># Tabla: distancia → intensidad</span>
+tabla = {<span class="num">0</span>: <span class="num">1.0</span>, <span class="num">1</span>: <span class="num">0.6</span>, <span class="num">2</span>: <span class="num">0.2</span>}
+<span class="cm">#        ↑centro   ↑vecino  ↑borde</span>
+
+<span class="kw">def</span> <span class="fn">pwm_distancia</span>(pos, freq=<span class="num">100</span>):
+    <span class="kw">for</span> i, led <span class="kw">in</span> <span class="fn">enumerate</span>(LEDS):
+        d = <span class="fn">abs</span>(i - pos)
+        duty = tabla.<span class="fn">get</span>(d, <span class="num">0.0</span>)
+        hat.<span class="fn">PWMLED</span>(led,
+            frequency=freq,
+            dutycycle=duty)
+
+<span class="cm"># Lista directa de intensidades</span>
+intensidades = [<span class="num">0.2</span>, <span class="num">0.6</span>, <span class="num">1.0</span>, <span class="num">0.6</span>, <span class="num">0.2</span>]
+<span class="kw">for</span> led, d <span class="kw">in</span> <span class="fn">zip</span>(LEDS, intensidades):
+    hat.<span class="fn">PWMLED</span>(led, frequency=<span class="num">100</span>, dutycycle=d)</pre>
+  </div>
+
+  <!-- TEMPORIZADOR -->
+  <div class="card">
+    <h2>⏱️ TEMPORIZADOR (sin threading)</h2>
+    <pre><span class="cm"># Al inicio:</span>
+t_reset = time.<span class="fn">time</span>()
+TIMEOUT = <span class="num">4.0</span>   <span class="cm"># ← segundos</span>
+
+<span class="cm"># En el bucle while:</span>
+<span class="kw">if</span> time.<span class="fn">time</span>() - t_reset >= TIMEOUT:
+    <span class="cm"># ACCIÓN AUTOMÁTICA</span>
+    salto = random.<span class="fn">randint</span>(<span class="num">-2</span>, <span class="num">2</span>)
+    pos += salto
+    t_reset = time.<span class="fn">time</span>()  <span class="cm"># ← resetear</span>
+
+<span class="cm"># Al pulsar botón, siempre añade:</span>
+t_reset = time.<span class="fn">time</span>()  <span class="cm"># ← resetear temporizador</span>
+
+<span class="cm"># Medir tiempo de reacción:</span>
+t0 = time.<span class="fn">time</span>()
+<span class="fn">esperar_boton</span>(<span class="num">19</span>)
+reaccion = time.<span class="fn">time</span>() - t0
+gano = reaccion < <span class="num">0.5</span>   <span class="cm"># ← umbral</span></pre>
+  </div>
+
+  <!-- CONTADOR PUNTUACIÓN -->
+  <div class="card">
+    <h2>🔢 CONTADOR + LEDs BINARIOS</h2>
+    <pre><span class="cm"># Pines del contador</span>
+LED_BIT1 = <span class="num">24</span>   <span class="cm"># bit 1 (vale 2)</span>
+LED_BIT0 = <span class="num">25</span>   <span class="cm"># bit 0 (vale 1)</span>
+contador = <span class="num">0</span>
+
+<span class="kw">def</span> <span class="fn">actualizar_contador</span>(delta):
+    <span class="kw">global</span> contador
+    contador = <span class="fn">max</span>(<span class="num">0</span>, <span class="fn">min</span>(contador+delta, <span class="num">3</span>))
+    hat.<span class="fn">LED</span>(LED_BIT1, <span class="fn">bool</span>(contador & <span class="num">0b10</span>))
+    hat.<span class="fn">LED</span>(LED_BIT0, <span class="fn">bool</span>(contador & <span class="num">0b01</span>))
+    <span class="fn">print</span>(<span class="str">f"Contador: {contador}"</span>)
+
+<span class="cm"># Uso:</span>
+<span class="cm"># actualizar_contador(+1)  → gana</span>
+<span class="cm"># actualizar_contador(-1)  → pierde</span>
+
+<span class="cm"># Tabla de referencia:</span>
+<span class="cm"># 0 → bit1=OFF bit0=OFF</span>
+<span class="cm"># 1 → bit1=OFF bit0=ON</span>
+<span class="cm"># 2 → bit1=ON  bit0=OFF</span>
+<span class="cm"># 3 → bit1=ON  bit0=ON</span></pre>
+  </div>
+
+  <!-- OSCILOSCOPIO -->
+  <div class="card">
+    <h2>📊 FÓRMULAS OSCILOSCOPIO / POLÍMETRO</h2>
+    <table>
+      <tr><th>Magnitud</th><th>Fórmula</th><th>Ej: f=2Hz D=30%</th></tr>
+      <tr><td>Periodo T</td><td>1 / f</td><td class="green">0.500 s</td></tr>
+      <tr><td>t_HIGH</td><td>T × D</td><td class="green">0.150 s</td></tr>
+      <tr><td>t_LOW</td><td>T × (1-D)</td><td class="green">0.350 s</td></tr>
+      <tr><td>V_alto</td><td>GPIO Raspi</td><td class="green">3.3 V</td></tr>
+      <tr><td>V_medio (DC)</td><td>3.3 × D</td><td class="green">0.99 V</td></tr>
+      <tr><td>V_pp</td><td>V_alto</td><td class="green">3.3 V</td></tr>
+    </table>
+    <br>
+    <pre><span class="cm"># Cambiar duty en vivo (para mostrar al profe)</span>
+hat.<span class="fn">PWMLED</span>(<span class="num">23</span>, frequency=<span class="num">2</span>, dutycycle=<span class="num">0.50</span>)
+<span class="cm"># → Vdc = 1.65 V  |  t_HIGH = 0.25 s</span>
+hat.<span class="fn">PWMLED</span>(<span class="num">23</span>, frequency=<span class="num">2</span>, dutycycle=<span class="num">0.80</span>)
+<span class="cm"># → Vdc = 2.64 V  |  t_HIGH = 0.40 s</span>
+hat.<span class="fn">PWMLED</span>(<span class="num">23</span>, frequency=<span class="num">5</span>, dutycycle=<span class="num">0.30</span>)
+<span class="cm"># → T = 0.20 s (más rápido, mismo duty)</span></pre>
+  </div>
+
+  <!-- VICTORIA/DERROTA -->
+  <div class="card">
+    <h2>🏆 CONDICIONES VICTORIA / DERROTA</h2>
+    <pre><span class="cm"># Derrota: salirse del tablero</span>
+<span class="kw">if</span> pos < <span class="num">0</span> <span class="kw">or</span> pos >= <span class="fn">len</span>(LEDS):
+    hat.<span class="fn">LED</span>(LED_VICTORIA, <span class="kw">False</span>)  <span class="cm"># apagar</span>
+    <span class="fn">print</span>(<span class="str">"PERDISTE"</span>)
+
+<span class="cm"># Derrota: colisión con perseguidor</span>
+<span class="kw">if</span> pos_jugador == pos_perseguidor:
+    <span class="fn">print</span>(<span class="str">"COLISIÓN - PERDISTE"</span>)
+
+<span class="cm"># Victoria: llegar al extremo</span>
+<span class="kw">if</span> pos == <span class="fn">len</span>(LEDS) - <span class="num">1</span>:
+    hat.<span class="fn">LED</span>(LED_VICTORIA, <span class="kw">True</span>)   <span class="cm"># encender</span>
+    <span class="fn">print</span>(<span class="str">"¡GANASTE!"</span>)
+
+<span class="cm"># Victoria: N veces por el mismo punto</span>
+veces = <span class="num">0</span>
+<span class="kw">if</span> pos == META:
+    veces += <span class="num">1</span>
+<span class="kw">if</span> veces >= N:
+    <span class="fn">print</span>(<span class="str">"¡GANASTE!"</span>)</pre>
+  </div>
+
+  <!-- ESTRUCTURA BUCLE -->
+  <div class="card">
+    <h2>🔁 ESTRUCTURA BUCLE PRINCIPAL</h2>
+    <pre><span class="kw">while True</span>:
+    <span class="cm"># ① Comprobar timeout (si lo hay)</span>
+    <span class="kw">if</span> time.<span class="fn">time</span>() - t_reset >= TIMEOUT:
+        <span class="cm"># acción automática</span>
+        t_reset = time.<span class="fn">time</span>()
+
+    <span class="cm"># ② Leer botones</span>
+    <span class="kw">if</span> <span class="fn">boton_pulsado</span>(BTN_DER):
+        pos += <span class="num">1</span>
+        t_reset = time.<span class="fn">time</span>()   <span class="cm"># reset timer</span>
+    <span class="kw">elif</span> <span class="fn">boton_pulsado</span>(BTN_IZQ):
+        pos -= <span class="num">1</span>
+        t_reset = time.<span class="fn">time</span>()
+    <span class="kw">else</span>:
+        time.<span class="fn">sleep</span>(<span class="num">0.01</span>)
+        <span class="kw">continue</span>
+
+    <span class="cm"># ③ Comprobar derrota</span>
+    <span class="kw">if</span> pos < <span class="num">0</span> <span class="kw">or</span> pos >= <span class="fn">len</span>(LEDS):
+        <span class="kw">break</span>
+
+    <span class="cm"># ④ Actualizar LEDs</span>
+    <span class="fn">encender_led</span>(pos)
+    <span class="cm"># pwm_distancia(pos)   ← si hay PWM</span>
+
+    <span class="cm"># ⑤ Comprobar victoria</span>
+    <span class="kw">if</span> <span class="fn">comprobar_victoria</span>(pos):
+        <span class="kw">break</span></pre>
+  </div>
+
+</div>
+<p style="text-align:center;color:#8b949e;margin-top:20px;font-size:11px">
+  🍓 Raspberry Pi iMAT — Cheatsheet examen | Recuerda: <strong style="color:#f0883e">cambiar pines según enunciado</strong>
+</p>
+</body>
+</html>
